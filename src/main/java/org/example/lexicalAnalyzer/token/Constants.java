@@ -32,6 +32,33 @@ public class Constants {
     public static final String NAME_COLON_COLON = "coloncolon";
     public static final String NAME_COMMA = "comma";
 
-    public static String OPERATOR = "operator";
-    public static String PUNCTUATION = "punctuation";
+    public static final String NAME_ID = "id";
+
+    public static final String NAME_IF = "if";
+    public static final String NAME_THEN = "then";
+    public static final String NAME_ELSE = "else";
+    public static final String NAME_WHILE = "while";
+    public static final String NAME_CLASS = "class";
+    public static final String NAME_INT = "integer";
+    public static final String NAME_FLOAT = "float";
+    public static final String NAME_DO = "do";
+    public static final String NAME_END = "end";
+    public static final String NAME_PUB = "public";
+    public static final String NAME_PRIVATE = "private";
+    public static final String NAME_OR = "or";
+    public static final String NAME_AND = "and";
+    public static final String NAME_NOT = "not";
+    public static final String NAME_READ = "read";
+    public static final String NAME_WRITE = "write";
+    public static final String NAME_RETURN = "return";
+    public static final String NAME_INH = "inherits";
+    public static final String NAME_LOC = "local";
+    public static final String NAME_VOID = "void";
+    public static final String NAME_MAIN = "main";
+
+    public static final String OPERATOR = "operator";
+    public static final String PUNCTUATION = "punctuation";
+
+    public static final String IDENTIFIER = "id";
+    public static final String KEYWORD = "keyword";
 }

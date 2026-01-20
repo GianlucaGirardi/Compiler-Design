@@ -24,7 +24,9 @@ public class LexerConfig {
 
     /* Conditional selecting will only apply on first char vs whole token */
     public CharType classify(char c1, char c2){
-        if(c1 > LOWER_CASE_START && c1 < LOWER_CASE_END) return CharType.LOWER_CASE_LETTER;
+        if((c1 >= LOWER_CASE_START && c1 <= LOWER_CASE_END) || (c1 >= UPPER_CASE_START && c1 <= UPPER_CASE_END)) {
+            return CharType.LETTER;
+        }
         else if(Character.isDigit(c1)) return CharType.NUMBER;
         else if(c1 == SLASH && (c2 == SLASH || c2 == STAR)) return CharType.COMMENT;
         else if(getPuncOperationSet().contains(c1)) return CharType.PUNCTUATION_OPERATION;

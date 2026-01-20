@@ -6,7 +6,7 @@ import org.example.lexicalAnalyzer.dispatcher.*;
 @AllArgsConstructor
 public enum CharType {
 
-    LOWER_CASE_LETTER(new IdDispatcher()),
+    LETTER(new IdDispatcher()),
     NUMBER(new NumberDispatcher()),
     PUNCTUATION_OPERATION(new PuncOperationDispatcher()),
     COMMENT(new CommentDispatcher()),

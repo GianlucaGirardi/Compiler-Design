@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 public class Constants {
     public static char LOWER_CASE_START = 'a';
     public static char LOWER_CASE_END = 'z';
+    public static char UPPER_CASE_START = 'A';
+    public static char UPPER_CASE_END = 'Z';
 
     public static char SLASH = '/';
     public static char STAR = '*';

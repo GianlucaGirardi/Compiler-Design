@@ -34,20 +34,20 @@ public class PuncOperationDispatcher implements Dispatcher{
 
         return tokenType != null
                 ? new Token(tokenType.getName(), lexeme, line)
-                : new Token(getInvalidTokenType(lexeme), lexeme, line);
+                : new Token("Invalid" + getInvalidTokenType(lexeme), lexeme, line); // Invalidtype
     }
 
     @Override
     public String getInvalidTokenType(String lexeme){
-        StringBuilder sbBactrack = new StringBuilder(lexeme);
+        StringBuilder sbBacktrack = new StringBuilder(lexeme);
 
-        while (sbBactrack.length() > 0) {
-            sbBactrack.deleteCharAt(sbBactrack.length() - 1);
-            PuncOperationTokenType tokenType = puncOperationTokenTypeMap.get(sbBactrack.toString());
+        while (sbBacktrack.length() > 0) {
+            sbBacktrack.deleteCharAt(sbBacktrack.length() - 1);
+            PuncOperationTokenType tokenType = puncOperationTokenTypeMap.get(sbBacktrack.toString());
             if (tokenType != null) return tokenType.getType();
         }
 
-        return "INVALID_OP_PUNC"; // TO DO: Replace with Constant
+        return "OP_PUNC"; // TO DO: Replace with Constant
     }
 
     public boolean isDelimiter(char c) {
