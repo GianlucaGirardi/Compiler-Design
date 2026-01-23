@@ -1,0 +1,25 @@
+name: IdDfa
+startState: q0
+alphabet: [LETTER, DIGIT, UNDERSCORE]
+types: [IDENTIFIER]
+acceptStates: [q1]
+trapStates: [qTrap]
+
+stateTypes:
+  IDENTIFIER: [q1]
+
+transitions:
+  q0:
+    LETTER: q1
+    DIGIT: qTrap
+    UNDERSCORE: qTrap
+
+  q1:
+    LETTER: q1
+    DIGIT: q1
+    UNDERSCORE: q1
+
+  qTrap:
+    LETTER: qTrap
+    DIGIT: qTrap
+    UNDERSCORE: qTrap

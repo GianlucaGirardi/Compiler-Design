@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.lexicalAnalyzer.CharStream;
 import org.example.lexicalAnalyzer.LexicalAnalyzer;
+import org.example.lexicalAnalyzer.config.DfaRegistry;
 import org.example.lexicalAnalyzer.config.LexerConfig;
 import org.example.lexicalAnalyzer.token.Token;
 
@@ -12,11 +13,17 @@ import java.util.List;
 
 public class App {
     public static void main( String[] args ) {
+        DfaRegistry.init();
         CharStream stream;
         List<Token> tokens = new ArrayList<>();
 
+        if(args.length != 1){
+            System.err.println("Usage: java Main <input-file>");
+            System.exit(1);
+        }
+
         try{
-            stream = new CharStream(Path.of("./lexpositivegrading.src"));
+            stream = new CharStream(Path.of(args[0]));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

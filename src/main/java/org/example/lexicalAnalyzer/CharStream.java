@@ -33,11 +33,7 @@ public final class CharStream {
         return curr == -1;
     }
 
-    /*
-    Assumes Windows CRLF line endings (\r\n).
-    If not,  line count won't increment.
-    Might need to adapt
-    */
+    /* Handle for diff OS */
     public void advance() {
         try {
             char c = peek();
@@ -46,15 +42,22 @@ public final class CharStream {
                 curr = next;
                 next = reader.read();
 
-                if (peek() == '\n') {
+                if (!isAtEnd() && peek() == '\n') {
                     curr = next;
                     next = reader.read();
                 }
+
+                line++;
+                return;
+            }
+
+            if (c == '\n') {
                 line++;
             }
 
             curr = next;
             next = reader.read();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

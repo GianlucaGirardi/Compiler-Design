@@ -1,0 +1,38 @@
+name: CommentDfa
+startState: q0
+alphabet: [SLASH, STAR]
+types: [INLINE_COMMENT, MULTI_LINE_COMMENT]
+acceptStates: [q4]
+trapStates: [qTrap]
+
+stateTypes:
+  INLINE_COMMENT: [q5]
+  MULTI_LINE_COMMENT: [q2, q3, q4]
+
+transitions:
+  q0:
+    SLASH: q1
+
+  q1:
+    SLASH: q5
+    STAR: q2
+
+  q2:
+    SLASH: q2
+    STAR: q3
+
+  q3:
+    SLASH: q4
+    STAR: q3
+
+  q4:
+    SLASH: qTrap
+    STAR: qTrap
+
+  q5:
+    SLASH: q5
+    STAR: q5
+
+  qTrap:
+    SLASH: qTrap
+    STAR: qTrap
