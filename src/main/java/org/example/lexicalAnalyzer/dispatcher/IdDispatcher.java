@@ -1,23 +1,30 @@
 package org.example.lexicalAnalyzer.dispatcher;
 
 import org.example.lexicalAnalyzer.CharStream;
+import org.example.lexicalAnalyzer.config.DfaRegistry;
+import org.example.lexicalAnalyzer.config.TransitionTable;
 import org.example.lexicalAnalyzer.token.IdKeywordTokenType;
 import org.example.lexicalAnalyzer.token.Token;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
+import java.util.Set;
 
 import static org.example.lexicalAnalyzer.config.Constants.*;
-import static org.example.lexicalAnalyzer.config.Constants.CARRIAGE_RETURN;
 
 public class IdDispatcher implements Dispatcher{
+
+    private final String dfaName;
+
     private final Map<String, IdKeywordTokenType> idKeywordTokenTypeMap;
-    private static final Pattern ID_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]*$");
 
+    private static final Set<Character> DELIMITER_SET = Set.of(
+            PLUS, MINUS, STAR, SLASH, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, SEMICOLON,
+            COMMA, COLON );
 
-    public IdDispatcher(){
+    public IdDispatcher(String dfaName){
+        this.dfaName = dfaName;
         idKeywordTokenTypeMap = new HashMap<>();
         Arrays.stream(IdKeywordTokenType.values()).filter(token -> token.getLexeme() != null)
                 .forEach((token ->
@@ -26,50 +33,75 @@ public class IdDispatcher implements Dispatcher{
 
     @Override
     public Token processToken(CharStream stream) {
-        StringBuilder stringBuilder = new StringBuilder();
+        TransitionTable table = initTable();
         int line = stream.getLine();
 
-        while (!stream.isAtEnd() && !isDelimiter((char) stream.getCurr())) {
-            stringBuilder.append((char) stream.getCurr());
-            stream.advance();
-        }
+        ScanResult result = consumeIdLexeme(stream, table);
+        String lexeme = result.lexeme();
 
-        String lexeme = stringBuilder.toString();
+        if (lexeme.isEmpty()) return null;
+
+        if (result.forcedInvalid()) return new Token(getInvalidTokenType(null), lexeme, line, false);
+
         IdKeywordTokenType tokenType = idKeywordTokenTypeMap.get(lexeme);
+        if (isValidKeyword(tokenType)) return new Token(tokenType.getName(), lexeme, line, true);
 
-        if(isValidKeyword(tokenType))return new Token(tokenType.getName(), lexeme, line);
+        return new Token(IdKeywordTokenType.ID.getName(), lexeme, line, true);
+    }
 
-        if(isValidId(lexeme)) return new Token(IdKeywordTokenType.ID.getName(), lexeme, line);
+    private ScanResult consumeIdLexeme(CharStream stream, TransitionTable table) {
+        StringBuilder stringBuilder = new StringBuilder();
+        boolean forcedInvalid = false;
 
-        return new Token("Invalid" + getInvalidTokenType(lexeme), lexeme, line); // TO DO: Invalidtype
+        while (!stream.isAtEnd()) {
+            char c = stream.peek();
+            String charClass = classify(c);
+
+            /* not in sigma */
+            if (charClass == null) break;
+
+            String state = table.getCurrentState();
+
+            /* guard */
+            if (!table.hasTransition(state, charClass)) break;
+
+            table.nextState(state, charClass);
+            stringBuilder.append(c);
+            stream.advance();
+
+            /* If invalid -> consume tail && force invalid */
+            if (table.isTrapState(table.getCurrentState())) {
+                forcedInvalid = true;
+            }
+        }
+        return new ScanResult(stringBuilder.toString(), table.getCurrentState(), forcedInvalid);
+    }
+
+    public String classify(char c){
+        if((c >= LOWER_CASE_START && c <= LOWER_CASE_END) || (c >= UPPER_CASE_START && c <= UPPER_CASE_END)){
+            return LETTER_NAME;
+        } else if(Character.isDigit(c))return DIGIT_NAME;
+        else if(c == UNDER_SCORE) return UNDER_SCORE_NAME;
+        return null;
+    }
+
+    public TransitionTable initTable() {
+        TransitionTable table = DfaRegistry.getTable(dfaName);
+        table.reset();
+        return table;
+    }
+
+    @Override
+    public boolean isDelimiter(char c) {
+        return Character.isWhitespace(c) || DELIMITER_SET.contains(c);
     }
 
     private boolean isValidKeyword(IdKeywordTokenType tokenType){
         return (tokenType != null && tokenType != IdKeywordTokenType.ID);
     }
 
-    private boolean isValidId(String lexeme){
-        return ID_PATTERN.matcher(lexeme).matches();
-    }
-
-    @Override
-    public boolean isDelimiter(char c) {
-        return c == WHITE_SPACE || c == TAB || c == NEXT_LINE || c == CARRIAGE_RETURN;
-    }
-
     @Override
     public String getInvalidTokenType(String lexeme) {
-        StringBuilder sbBacktrack = new StringBuilder(lexeme);
-
-        while (sbBacktrack.length() > 0) {
-            sbBacktrack.deleteCharAt(sbBacktrack.length() - 1);
-            IdKeywordTokenType tokenType = idKeywordTokenTypeMap.get(sbBacktrack.toString());
-
-            if (isValidKeyword(tokenType)) return tokenType.getType();
-
-            if(isValidId(sbBacktrack.toString())) return IdKeywordTokenType.ID.getType();
-
-        }
-        return "ID_KEYWORD"; // TO DO: Replace with Constant
+        return INVALID_ID_MESSAGE;
     }
 }

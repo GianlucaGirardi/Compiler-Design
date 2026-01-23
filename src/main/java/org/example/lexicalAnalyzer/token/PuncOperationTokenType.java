@@ -30,7 +30,8 @@ public enum PuncOperationTokenType {
     SEMI_PUNC(NAME_SEMI, String.valueOf(SEMICOLON), PUNCTUATION),
     COLON_PUNC(NAME_COLON, String.valueOf(COLON), PUNCTUATION),
     COLON_COLON_PUNC(NAME_COLON_COLON, COLON_COLON, PUNCTUATION),
-    COMMA_PUNC(NAME_COMMA, String.valueOf(COMMA), PUNCTUATION);
+    COMMA_PUNC(NAME_COMMA, String.valueOf(COMMA), PUNCTUATION),
+    DOT_PUNC(DOT_NAME, String.valueOf(DOT), PUNCTUATION);
 
     private final String name;
 

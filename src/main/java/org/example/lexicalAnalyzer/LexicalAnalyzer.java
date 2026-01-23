@@ -8,6 +8,8 @@ import org.example.lexicalAnalyzer.config.LexerConfig;
 
 import org.example.lexicalAnalyzer.token.Token;
 
+import static org.example.lexicalAnalyzer.config.Constants.INVALID_CHAR_MESSAGE;
+
 
 @Data
 @ToString
@@ -20,11 +22,15 @@ public class LexicalAnalyzer {
     public Token nextToken(){
         advanceToNextToken();
 
-        if(stream.isAtEnd()) return new Token("EOF", "EOF", stream.getLine()); /* TO DO: Replace temp Handling EOF */
+        if(stream.isAtEnd()) return new Token("EOF", "EOF", stream.getLine(), false); /* TO DO: Replace temp Handling EOF */
 
         CharType type =  getCurrentCharType();
-        /* Handle Invalid Char type where dispatcher is null - all dispatcher null cases are handled */
-        if(type == CharType.INVALID_TYPE) return null;
+
+        if(type == CharType.INVALID_TYPE){
+            String invalidCharInput = String.valueOf(stream.peek());
+            stream.advance();
+            return new Token(INVALID_CHAR_MESSAGE, invalidCharInput, stream.getLine(), false);
+        }
 
         return lexerConfig.getEnumDispatcherMap().get(type).processToken(stream);
     }

@@ -33,24 +33,24 @@ public class PuncOperationDispatcher implements Dispatcher{
         PuncOperationTokenType tokenType = puncOperationTokenTypeMap.get(lexeme);
 
         return tokenType != null
-                ? new Token(tokenType.getName(), lexeme, line)
-                : new Token("Invalid" + getInvalidTokenType(lexeme), lexeme, line); // Invalidtype
+                ? new Token(tokenType.getName(), lexeme, line, true)
+                : new Token(INVALID_MESSAGE_PREFIX + getInvalidTokenType(lexeme), lexeme, line, false);
     }
 
     @Override
     public String getInvalidTokenType(String lexeme){
         StringBuilder sbBacktrack = new StringBuilder(lexeme);
 
-        while (sbBacktrack.length() > 0) {
+        while (!sbBacktrack.isEmpty()) {
             sbBacktrack.deleteCharAt(sbBacktrack.length() - 1);
             PuncOperationTokenType tokenType = puncOperationTokenTypeMap.get(sbBacktrack.toString());
             if (tokenType != null) return tokenType.getType();
         }
 
-        return "OP_PUNC"; // TO DO: Replace with Constant
+        return INVALID_PUNCOP_MESSAGE;
     }
 
     public boolean isDelimiter(char c) {
-        return c == WHITE_SPACE || c == TAB || c == NEXT_LINE || c == CARRIAGE_RETURN;
+        return Character.isWhitespace(c);
     }
 }

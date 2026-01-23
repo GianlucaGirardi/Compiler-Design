@@ -12,5 +12,7 @@ public class Token {
     private final String lexeme;
 
     private final Integer line;
-    
+
+    private final boolean isValid;
+
 }
