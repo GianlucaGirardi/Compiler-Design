@@ -1,16 +1,15 @@
 package org.example.lexicalAnalyzer.dispatcher;
 
-import org.example.lexicalAnalyzer.CharStream;
+import org.example.lexicalAnalyzer.ICharStream;
 import org.example.lexicalAnalyzer.token.PuncOperationTokenType;
 import org.example.lexicalAnalyzer.token.Token;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.example.lexicalAnalyzer.config.Constants.*;
 
 public class PuncOperationDispatcher implements Dispatcher{
+
     private final Map<String, PuncOperationTokenType> puncOperationTokenTypeMap;
 
     public PuncOperationDispatcher(){
@@ -20,21 +19,38 @@ public class PuncOperationDispatcher implements Dispatcher{
     }
 
     @Override
-    public Token processToken(CharStream stream) {
-        StringBuilder stringBuilder = new StringBuilder();
+    public Token processToken(ICharStream stream) {
         int line = stream.getLine();
 
-        while (!stream.isAtEnd() && !isDelimiter((char) stream.getCurr())) {
-            stringBuilder.append((char) stream.getCurr());
-            stream.advance();
+        if (stream.isAtEnd()) return null;
+
+        char c1 = stream.peek();
+        if (Character.isWhitespace(c1)) return null;
+
+        String one = String.valueOf(c1);
+
+        char c2 = stream.peekNext();
+        String two = (c2 == '\0') ? null : ("" + c1 + c2);
+
+        /* handle potential op size of two */
+        if (two != null) {
+            PuncOperationTokenType tokenType2 = puncOperationTokenTypeMap.get(two);
+            if (tokenType2 != null) {
+                stream.advance();
+                stream.advance();
+                return new Token(tokenType2.getName(), two, line, true);
+            }
         }
 
-        String lexeme = stringBuilder.toString();
-        PuncOperationTokenType tokenType = puncOperationTokenTypeMap.get(lexeme);
+        /* default back to op size one */
+        PuncOperationTokenType tokenType1 = puncOperationTokenTypeMap.get(one);
+        if (tokenType1 != null) {
+            stream.advance();
+            return new Token(tokenType1.getName(), one, line, true);
+        }
 
-        return tokenType != null
-                ? new Token(tokenType.getName(), lexeme, line, true)
-                : new Token(INVALID_MESSAGE_PREFIX + getInvalidTokenType(lexeme), lexeme, line, false);
+        stream.advance();
+        return new Token(INVALID_MESSAGE_PREFIX + getInvalidTokenType(one), one, line, false);
     }
 
     @Override

@@ -1,7 +1,8 @@
 package org.example.lexicalAnalyzer.dispatcher;
 
 import lombok.RequiredArgsConstructor;
-import org.example.lexicalAnalyzer.CharStream;
+
+import org.example.lexicalAnalyzer.ICharStream;
 import org.example.lexicalAnalyzer.config.DfaRegistry;
 import org.example.lexicalAnalyzer.config.TransitionTable;
 import org.example.lexicalAnalyzer.token.Token;
@@ -20,7 +21,7 @@ public class NumberDispatcher implements Dispatcher {
             COMMA, COLON);
 
     @Override
-    public Token processToken(CharStream stream) {
+    public Token processToken(ICharStream stream) {
         TransitionTable table = initTable();
         int line = stream.getLine();
 
@@ -55,7 +56,7 @@ public class NumberDispatcher implements Dispatcher {
         return INVALID_NUMBER_MESSAGE;
     }
 
-    private ScanResult consumeNumberLexeme(CharStream stream, TransitionTable table) {
+    private ScanResult consumeNumberLexeme(ICharStream stream, TransitionTable table) {
         StringBuilder stringBuilder = new StringBuilder();
         boolean forcedInvalid = false;
 

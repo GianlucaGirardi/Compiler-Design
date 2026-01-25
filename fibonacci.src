@@ -1,0 +1,77 @@
+/* =====================================================
+   Fibonacci Demo
+   Designed to exercise the lexical analyzer
+   Covers:
+   - integers & floats
+   - identifiers
+   - operators
+   - conditionals
+   - loops
+   - comments
+   ===================================================== */
+
+/* compute nth fibonacci number */
+function fibonacci(n: integer) -> integer
+{
+    local a : integer;
+    local b : integer;
+    local temp : integer;
+    local i : integer;
+
+    a = 0;
+    b = 1;
+    i = 0;
+
+    if (n == 0) then
+    {
+        return a;
+    }
+    end
+
+    while (i < n - 1) do
+    {
+        temp = a + b;
+        a = b;
+        b = temp;
+        i = i + 1;
+    }
+    end
+
+    return b;
+}
+
+
+/* print fibonacci sequence up to n */
+function printFibonacci(n: integer) : void
+{
+    local i : integer;
+    local result : integer;
+
+    i = 0;
+
+    while (i < n) do
+    {
+        result = fibonacci(i);
+        write(result);
+        i = i + 1;
+    }
+    end
+}
+
+
+/* main function */
+function main() : void
+{
+    local n : integer;
+    local f : float;
+
+    n = 10;
+
+    // float coverage for lexer
+    f = 1.23;
+    f = 12.34;
+    f = 120.34e10;
+    f = 12345.6789e-123;
+
+    printFibonacci(n);
+}

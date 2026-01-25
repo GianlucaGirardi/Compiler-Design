@@ -8,6 +8,7 @@ import org.example.lexicalAnalyzer.config.LexerConfig;
 
 import org.example.lexicalAnalyzer.token.Token;
 
+import static org.example.lexicalAnalyzer.config.Constants.EOF_MARKER;
 import static org.example.lexicalAnalyzer.config.Constants.INVALID_CHAR_MESSAGE;
 
 
@@ -17,12 +18,12 @@ import static org.example.lexicalAnalyzer.config.Constants.INVALID_CHAR_MESSAGE;
 public class LexicalAnalyzer {
     private final LexerConfig lexerConfig;
 
-    private final CharStream stream;
+    private final ICharStream stream;
 
     public Token nextToken(){
         advanceToNextToken();
 
-        if(stream.isAtEnd()) return new Token("EOF", "EOF", stream.getLine(), false); /* TO DO: Replace temp Handling EOF */
+        if(stream.isAtEnd()) return new Token(EOF_MARKER, EOF_MARKER, stream.getLine(), false);
 
         CharType type =  getCurrentCharType();
 

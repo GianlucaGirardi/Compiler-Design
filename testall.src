@@ -1,0 +1,112 @@
+/*
+   EverythingDemo.src  (kitchen-sink lexer coverage)
+   Goal: touch almost every token/category your lexer supports.
+   Includes a small "INVALID" section at the end (commented).
+   */
+
+/* block comment (single line) */
+
+/* block comment (multi line)
+   line 2
+   line 3
+*/
+
+// inline comment
+
+
+public class main inherits Base :: Parent
+{
+    private integer x, y, z;
+    public float f;
+    local integer arr[5];
+
+    /*  identifiers (valid) */
+    abc;
+    abc1;
+    a1bc;
+    abc_1abc;
+    abc1_abc;
+
+    /*  integers (valid)  */
+    x = 0;
+    y = 1;
+    z = 10;
+    x = 12;
+    y = 123;
+    z = 12345;
+
+    /*  floats (valid)  */
+    f = 1.23;
+    f = 12.34;
+    f = 120.34e10;
+    f = 12345.6789e-123;
+
+    /*  array + brackets */
+    arr[0] = 12;
+    arr[1] = 3;
+    arr[2] = 45;
+    arr[3] = 7;
+    arr[4] = 1;
+
+    /*  arithmetic operators  */
+    x = x+ y;
+    x = x -y;
+    x=x*y;
+    x=x/y;
+
+    /*  relational operators  */
+    if (x == y) then { write(x); } else { write(y); } end
+    if (x <> y) then { write(x); } end
+    if (x <  y) then { write(x); } end
+    if (x >  y) then { write(y); } end
+    if (x <=y) then { write(x); } end
+    if (x >= y) then { write(y); } end
+
+    /* boolean-ish keywords */
+    if not ((x == 0) and (y == 1) or (x <> y)) then
+    {
+        write(x);
+    }
+    else
+    {
+        write(y);
+    }
+    end
+
+    /*  while / do / read / write  */
+    read(x);
+    while (x < 5) do
+    {
+        write(arr[x]);
+        x = x + 1;
+    }
+    end
+
+    /*  punctuation coverage
+       ; , . : :: (already used :: above)
+       We'll force '.' and ':' to appear too.
+       Note: These may be syntactically weird for your parser,
+       but they are GREAT for lexer coverage.
+    */
+    y : integer;
+    x = x + 1;
+    z = z + 1;
+
+    /*  return / void / integer / float keywords already covered  */
+    return;
+}
+
+/*
+   INVALID SECTION (ON PURPOSE)
+   Should show up in error file
+    */
+
+bad1 = @#;          // INVALID: '@#' not in alphabet will produce 2 invalid tokens
+bad2 = 1abc;        // INVALID: number cannot contain letters; aside from e in FLOAT
+bad2 = 01;          // INVALID: number cannot start with a 0
+bad3 = 12.34.56;    // INVALID: multiple dots
+bad4 = 123e++;      // INVALID: malformed exponent (123e) ++ should be valid
+bad5 = abc~def;     // INVALID: '~' not a supported operator (abc and def should be valid)
+bad6 = _a45$;       // INVALID: identifier, cannot start with a '_', should be an invalid id and invalid character
+bad7 = 1@abc;      // INVALID number... wont stop lexing if part after number is not an operator
+bad6 = _1abc;      // INVALID identifier cannot start with '_'

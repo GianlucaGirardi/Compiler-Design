@@ -31,6 +31,7 @@ public class Constants {
     public static final String NAME_COLON = "colon";
     public static final String NAME_COLON_COLON = "coloncolon";
     public static final String NAME_COMMA = "comma";
+    public static final String NAME_DOT = "dot";
 
     public static final String NAME_ID = "id";
 

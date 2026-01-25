@@ -1,0 +1,100 @@
+/*
+   Bubble Sort + Print Demo
+   Designed to exercise the lexical analyzer
+   Covers:
+   - identifiers
+   - integers & floats
+   - operators
+   - comments (block + inline)
+   - arrays, brackets, punctuation
+   - keywords: if, then, else, end, while, do, read, write
+*/
+
+// invalid ids
+    _bad = 1;
+    _
+    _another = 2;
+
+    // invalid numbers
+    i2 = 00;
+    i3 = 01;
+    i1_23 = 1.;
+    f1 = 1.0e;
+    f2 = 1.0e-;
+    f3 = 1.0e012345;
+
+/* sort the array */
+function bubbleSort(arr: integer[], size: integer) : void
+{
+    local n    : integer;
+    local i    : integer;
+    local j    : integer;
+    local temp : integer;
+
+    n = size;
+    i = 0;
+
+    while (i < n) do
+    {
+        j = 0;
+
+        while (j < n-1) do
+        {
+            if (arr[j]> arr[j+1]) then
+            {
+                // swap elements
+                temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+            end
+
+            j = j+1;
+        }
+        end
+
+        i=i+1;
+    }
+    end
+}
+
+
+/* print the array */
+function printArray(arr: integer[], size: integer) : void
+{
+    local i : integer;
+    i = 0;
+
+    while (i < size) do
+    {
+        write(arr[i]);
+        i = i + 1;
+    }
+    end
+}
+
+
+/* main function */
+function main() : void
+{
+    local arr  : integer[5];
+    local size : integer;
+    local f    : float;
+
+    size = 5;
+
+    // integer values
+    arr[0] = 12;
+    arr[1] = 3;
+    arr[2] = 45;
+    arr[3] = 7;
+    arr[4] = 1;
+
+    // float coverage
+    f = 1.23;
+    f = 120.34e10;
+    f = 12345.6789e-123;
+
+    bubbleSort(arr, size);
+    printArray(arr, size);
+}

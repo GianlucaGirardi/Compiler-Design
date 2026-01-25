@@ -2,7 +2,7 @@ package org.example.lexicalAnalyzer.dispatcher;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.example.lexicalAnalyzer.CharStream;
+import org.example.lexicalAnalyzer.ICharStream;
 import org.example.lexicalAnalyzer.config.DfaRegistry;
 import org.example.lexicalAnalyzer.config.TransitionTable;
 import org.example.lexicalAnalyzer.token.Token;
@@ -19,10 +19,10 @@ public class CommentDispatcher implements Dispatcher{
 
     private int lastRecordedLine;
 
-    private CharStream stream;
+    private ICharStream stream;
 
     @Override
-    public Token processToken(CharStream stream) {
+    public Token processToken(ICharStream stream) {
         TransitionTable table = initTable();
         this.setLastRecordedLine(stream.getLine());
         this.setStream(stream);
@@ -42,7 +42,7 @@ public class CommentDispatcher implements Dispatcher{
         return new Token(type, lexeme, lastRecordedLine, true);
     }
 
-    private ScanResult consumeCommentLexeme(CharStream stream, TransitionTable table) {
+    private ScanResult consumeCommentLexeme(ICharStream stream, TransitionTable table) {
         StringBuilder sb = new StringBuilder();
         boolean forcedInvalid = false;
 
@@ -60,7 +60,7 @@ public class CommentDispatcher implements Dispatcher{
             String charClass = classify(c);
 
             /* transition only on SLASH or STAR if it is in Transition map */
-            if (charClass != null && table.hasTransition(table.getCurrentState(), charClass)) {
+            if (table.hasTransition(table.getCurrentState(), charClass)) {
                 table.nextState(table.getCurrentState(), charClass);
             }
 
@@ -100,12 +100,12 @@ public class CommentDispatcher implements Dispatcher{
     public String classify(char c) {
         if (c == SLASH) return SLASH_NAME;
         else if (c == STAR) return STAR_NAME;
-        return null;
+        return DEFAULT_NAME;
     }
 
     @Override
     public boolean isDelimiter(char c) {
-        if(table.getStateToType().get(table.getCurrentState()).equals(INLINE_COMMENT_NAME)) {
+        if(INLINE_COMMENT_NAME.equals(table.getStateToType().get(table.getCurrentState()))) {
             return this.getStream().getLine() != this.getLastRecordedLine();
         }
         return false;

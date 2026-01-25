@@ -11,6 +11,7 @@ public class Constants {
     public static final String DFA_INDEX_PATH = "dfa/dfa.index";
     public static final String DFA_RESOURCE_PATH = "dfa/";
     public static final String INDEX_FILE_COMMENT= "#";
+    public static final String EOF_MARKER = "EOF";
 
     public static final char ZERO_DIGIT = '0';
     public static final char NINE_DIGIT = '9';
@@ -64,6 +65,7 @@ public class Constants {
     public static final String COMMENT_NAME = "COMMENT";
     public static final String INLINE_COMMENT_NAME = "INLINE_COMMENT";
     public static final String MULTI_LINE_COMMENT_NAME = "MULTI_LINE_COMMENT";
+    public static final String DEFAULT_NAME = "DEFAULT";
 
     public static final String NUMBER_DFA_NAME = "NumDfa";
     public static final String ID_DFA_NAME = "IdDfa";

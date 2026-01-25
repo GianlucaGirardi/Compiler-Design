@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Data
-public final class CharStream {
+public final class CharStream implements ICharStream {
     private final BufferedReader reader;
     private int curr;
     private int next;
