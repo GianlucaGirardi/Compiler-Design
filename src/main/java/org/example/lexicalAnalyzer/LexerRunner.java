@@ -27,7 +27,10 @@ public class LexerRunner {
             Token token = lexicalAnalyzer.nextToken();
 
             if(token == null) continue;
-            if(token.getType().equals(EOF_MARKER)) break;
+            if(token.getType().equals(EOF_MARKER)){
+                validTokens.add(new Token(EOF_MARKER_TYPE, EOF_MARKER, stream.getLine(), true));
+                break;
+            }
 
             handleToken(token);
         }

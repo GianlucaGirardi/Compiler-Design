@@ -10,7 +10,7 @@ public class App {
     public static void main( String[] args ) {
 
         if (args.length != 1) {
-            System.err.println("Usage: java App <input-file>");
+            System.err.println("Usage: lexdriver <input-file.src>");
             System.exit(1);
         }
 
@@ -20,8 +20,8 @@ public class App {
         try {
             lexicalAnalyzerResult = LexerRunner.run(Path.of(args[0]));
 
-            /* To be removed in A2 */
-            LexerOutputWriter.writeAll(lexicalAnalyzerResult);
+            /* Uncomment to visualize A1 output */
+//            LexerOutputWriter.writeAll(lexicalAnalyzerResult);
         } catch (IOException e) {
             System.err.println("Could not read input file: " + e.getMessage());
             System.exit(1);

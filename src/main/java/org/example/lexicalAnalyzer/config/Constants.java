@@ -12,6 +12,7 @@ public class Constants {
     public static final String DFA_RESOURCE_PATH = "dfa/";
     public static final String INDEX_FILE_COMMENT= "#";
     public static final String EOF_MARKER = "EOF";
+    public static final String EOF_MARKER_TYPE = "eof";
 
     public static final char ZERO_DIGIT = '0';
     public static final char NINE_DIGIT = '9';

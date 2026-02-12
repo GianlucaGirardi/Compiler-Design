@@ -1,0 +1,421 @@
+START:
+  main: [PROG, eof]
+  class: [PROG, eof]
+  id: [PROG, eof]
+
+PROG:
+  main: [REPTPROG0, REPTPROG1, main, FUNCBODY]
+  class: [REPTPROG0, REPTPROG1, main, FUNCBODY]
+  id: [REPTPROG0, REPTPROG1, main, FUNCBODY]
+
+CLASSDECL:
+  class: [class, id, OPTCLASSDECL2, opencubr, REPTCLASSDECL4, closecubr, semi]
+
+FPARAMS:
+  integer: [TYPE, id, REPTFPARAMS2, REPTFPARAMS3]
+  float: [TYPE, id, REPTFPARAMS2, REPTFPARAMS3]
+  id: [TYPE, id, REPTFPARAMS2, REPTFPARAMS3]
+  closepar: []
+
+FPARAMSTAIL:
+  comma: [comma, TYPE, id, REPTFPARAMSTAIL3]
+
+FUNCBODY:
+  do: [OPTFUNCBODY0, do, REPTFUNCBODY2, end]
+  local: [OPTFUNCBODY0, do, REPTFUNCBODY2, end]
+
+FUNCDEF:
+  id: [FUNCHEAD, FUNCBODY, semi]
+
+FUNCHEAD:
+  id: [id, FUNCHEAD_TAIL, openpar, FPARAMS, closepar, colon, FUNCRET]
+
+FUNCHEAD_TAIL:
+  coloncolon: [coloncolon, id]
+  openpar: []
+
+FUNCRET:
+  void: [void]
+  integer: [TYPE]
+  float: [TYPE]
+  id: [TYPE]
+
+MEMBERDECL:
+  id: [id, MEMBERDECL_ID_TAIL]
+  integer: [integer, id, REPTVARDECL2, semi]
+  float: [float, id, REPTVARDECL2, semi]
+
+MEMBERDECL_ID_TAIL:
+  openpar: [openpar, FPARAMS, closepar, colon, FUNCRET, semi]
+  id: [id, REPTVARDECL2, semi]
+
+OPTCLASSDECL2:
+  inherits: [inherits, id, REPTOPTCLASSDECL22]
+  opencubr: []
+
+OPTFUNCBODY0:
+  local: [local, REPTOPTFUNCBODY01]
+  do: []
+
+REPTCLASSDECL4:
+  private: [VISIBILITY, MEMBERDECL, REPTCLASSDECL4]
+  public: [VISIBILITY, MEMBERDECL, REPTCLASSDECL4]
+  closecubr: []
+
+REPTFPARAMS2:
+  opensqbr: [ARRAYSIZE, REPTFPARAMS2]
+  closepar: []
+  comma: []
+
+REPTFPARAMS3:
+  comma: [FPARAMSTAIL, REPTFPARAMS3]
+  closepar: []
+
+REPTFPARAMSTAIL3:
+  opensqbr: [ARRAYSIZE, REPTFPARAMSTAIL3]
+  comma: []
+  closepar: []
+
+REPTFUNCBODY2:
+  if: [STATEMENT, REPTFUNCBODY2]
+  while: [STATEMENT, REPTFUNCBODY2]
+  read: [STATEMENT, REPTFUNCBODY2]
+  write: [STATEMENT, REPTFUNCBODY2]
+  return: [STATEMENT, REPTFUNCBODY2]
+  id: [STATEMENT, REPTFUNCBODY2]
+  end: []
+
+REPTOPTCLASSDECL22:
+  comma: [comma, id, REPTOPTCLASSDECL22]
+  opencubr: []
+
+REPTOPTFUNCBODY01:
+  integer: [VARDECL, REPTOPTFUNCBODY01]
+  float: [VARDECL, REPTOPTFUNCBODY01]
+  id: [VARDECL, REPTOPTFUNCBODY01]
+  do: []
+
+REPTPROG0:
+  class: [CLASSDECL, REPTPROG0]
+  id: []
+  main: []
+
+REPTPROG1:
+  id: [FUNCDEF, REPTPROG1]
+  main: []
+
+REPTSTATBLOCK1:
+  if: [STATEMENT, REPTSTATBLOCK1]
+  while: [STATEMENT, REPTSTATBLOCK1]
+  read: [STATEMENT, REPTSTATBLOCK1]
+  write: [STATEMENT, REPTSTATBLOCK1]
+  return: [STATEMENT, REPTSTATBLOCK1]
+  id: [STATEMENT, REPTSTATBLOCK1]
+  end: []
+
+REPTVARDECL2:
+  opensqbr: [ARRAYSIZE, REPTVARDECL2]
+  semi: []
+
+STATBLOCK:
+  do: [do, REPTSTATBLOCK1, end]
+  if: [STATEMENT]
+  while: [STATEMENT]
+  read: [STATEMENT]
+  write: [STATEMENT]
+  return: [STATEMENT]
+  id: [STATEMENT]
+  else: []
+  semi: []
+
+STATEMENT:
+  if: [if, openpar, RELEXPR, closepar, then, STATBLOCK, else, STATBLOCK, semi]
+  while: [while, openpar, RELEXPR, closepar, STATBLOCK, semi]
+  read: [read, openpar, VARIABLE, closepar, semi]
+  write: [write, openpar, EXPR, closepar, semi]
+  return: [return, openpar, EXPR, closepar, semi]
+  id: [id, STMT_ID_TAIL, semi]
+
+STMT_ID_TAIL:
+  openpar: [openpar, APARAMS, closepar, STMT_AFTER_CALL]
+  dot: [REPTIDNEST1, STMT_AFTER_VAR]
+  opensqbr: [REPTIDNEST1, STMT_AFTER_VAR]
+  assign: [REPTIDNEST1, STMT_AFTER_VAR]
+
+STMT_AFTER_CALL:
+  dot: [dot, id, STMT_ID_TAIL]
+  semi: []
+
+STMT_AFTER_VAR:
+  dot: [dot, id, STMT_ID_TAIL]
+  assign: [ASSIGNOP, EXPR]
+
+RELEXPR:
+  id: [ARITHEXPR, EXPR4]
+  intnum: [ARITHEXPR, EXPR4]
+  floatnum: [ARITHEXPR, EXPR4]
+  openpar: [ARITHEXPR, EXPR4]
+  not: [ARITHEXPR, EXPR4]
+  plus: [ARITHEXPR, EXPR4]
+  minus: [ARITHEXPR, EXPR4]
+
+EXPR4:
+  eq: [RELOP, ARITHEXPR]
+  noteq: [RELOP, ARITHEXPR]
+  lt: [RELOP, ARITHEXPR]
+  gt: [RELOP, ARITHEXPR]
+  leq: [RELOP, ARITHEXPR]
+  geq: [RELOP, ARITHEXPR]
+
+TYPE:
+  integer: [integer]
+  float: [float]
+  id: [id]
+
+VARDECL:
+  integer: [TYPE, id, REPTVARDECL2, semi]
+  float: [TYPE, id, REPTVARDECL2, semi]
+  id: [TYPE, id, REPTVARDECL2, semi]
+
+VISIBILITY:
+  public: [public]
+  private: [private]
+
+ADDOP:
+  plus: [plus]
+  minus: [minus]
+  or: [or]
+
+APARAMS:
+  id: [EXPR, REPTAPARAMS1]
+  intnum: [EXPR, REPTAPARAMS1]
+  floatnum: [EXPR, REPTAPARAMS1]
+  openpar: [EXPR, REPTAPARAMS1]
+  not: [EXPR, REPTAPARAMS1]
+  plus: [EXPR, REPTAPARAMS1]
+  minus: [EXPR, REPTAPARAMS1]
+  closepar: []
+
+APARAMSTAIL:
+  comma: [comma, EXPR]
+
+ARITHEXPR:
+  id: [TERM, RIGHTRECARITHEXPR]
+  intnum: [TERM, RIGHTRECARITHEXPR]
+  floatnum: [TERM, RIGHTRECARITHEXPR]
+  openpar: [TERM, RIGHTRECARITHEXPR]
+  not: [TERM, RIGHTRECARITHEXPR]
+  plus: [TERM, RIGHTRECARITHEXPR]
+  minus: [TERM, RIGHTRECARITHEXPR]
+
+ARRAYSIZE:
+  opensqbr: [opensqbr, ARRAYSIZE2]
+
+ARRAYSIZE2:
+  intnum: [intnum, closesqrbr]
+  closesqrbr: [closesqrbr]
+
+ASSIGNOP:
+  assign: [assign]
+
+EXPR:
+  id: [ARITHEXPR, EXPR2]
+  intnum: [ARITHEXPR, EXPR2]
+  floatnum: [ARITHEXPR, EXPR2]
+  openpar: [ARITHEXPR, EXPR2]
+  not: [ARITHEXPR, EXPR2]
+  plus: [ARITHEXPR, EXPR2]
+  minus: [ARITHEXPR, EXPR2]
+
+EXPR2:
+  eq: [RELOP, ARITHEXPR]
+  noteq: [RELOP, ARITHEXPR]
+  lt: [RELOP, ARITHEXPR]
+  gt: [RELOP, ARITHEXPR]
+  leq: [RELOP, ARITHEXPR]
+  geq: [RELOP, ARITHEXPR]
+  semi: []
+  closepar: []
+  comma: []
+
+FACTOR:
+  id: [id, FACTOR2, REPTVARIABLEORFUNCTIONCALL]
+  intnum: [intnum]
+  floatnum: [floatnum]
+  openpar: [openpar, ARITHEXPR, closepar]
+  not: [not, FACTOR]
+  plus: [SIGN, FACTOR]
+  minus: [SIGN, FACTOR]
+
+FACTOR2:
+  openpar: [openpar, APARAMS, closepar]
+  opensqbr: [REPTIDNEST1]
+  mult: [REPTIDNEST1]
+  div: [REPTIDNEST1]
+  and: [REPTIDNEST1]
+  dot: [REPTIDNEST1]
+  plus: [REPTIDNEST1]
+  minus: [REPTIDNEST1]
+  or: [REPTIDNEST1]
+  eq: [REPTIDNEST1]
+  noteq: [REPTIDNEST1]
+  lt: [REPTIDNEST1]
+  gt: [REPTIDNEST1]
+  leq: [REPTIDNEST1]
+  geq: [REPTIDNEST1]
+  closesqrbr: [REPTIDNEST1]
+  semi: [REPTIDNEST1]
+  comma: [REPTIDNEST1]
+  closepar: [REPTIDNEST1]
+
+REPTIDNEST1:
+  opensqbr: [INDICE, REPTIDNEST1]
+  mult: []
+  div: []
+  and: []
+  plus: []
+  minus: []
+  or: []
+  eq: []
+  noteq: []
+  lt: []
+  gt: []
+  leq: []
+  geq: []
+  closesqrbr: []
+  assign: []
+  dot: []
+  semi: []
+  comma: []
+  closepar: []
+
+REPTVARIABLEORFUNCTIONCALL:
+  dot: [IDNEST, REPTVARIABLEORFUNCTIONCALL]
+  mult: []
+  div: []
+  and: []
+  plus: []
+  minus: []
+  or: []
+  eq: []
+  noteq: []
+  lt: []
+  gt: []
+  leq: []
+  geq: []
+  closesqrbr: []
+  semi: []
+  comma: []
+  closepar: []
+
+IDNEST:
+  dot: [dot, id, IDNEST2]
+
+IDNEST2:
+  openpar: [openpar, APARAMS, closepar]
+  opensqbr: [REPTIDNEST1]
+  mult: [REPTIDNEST1]
+  div: [REPTIDNEST1]
+  and: [REPTIDNEST1]
+  dot: [REPTIDNEST1]
+  plus: [REPTIDNEST1]
+  minus: [REPTIDNEST1]
+  or: [REPTIDNEST1]
+  eq: [REPTIDNEST1]
+  noteq: [REPTIDNEST1]
+  lt: [REPTIDNEST1]
+  gt: [REPTIDNEST1]
+  leq: [REPTIDNEST1]
+  geq: [REPTIDNEST1]
+  closesqrbr: [REPTIDNEST1]
+  semi: [REPTIDNEST1]
+  comma: [REPTIDNEST1]
+  closepar: [REPTIDNEST1]
+
+INDICE:
+  opensqbr: [opensqbr, ARITHEXPR, closesqrbr]
+
+MULTOP:
+  mult: [mult]
+  div: [div]
+  and: [and]
+
+RELOP:
+  eq: [eq]
+  noteq: [noteq]
+  lt: [lt]
+  gt: [gt]
+  leq: [leq]
+  geq: [geq]
+
+REPTAPARAMS1:
+  comma: [APARAMSTAIL, REPTAPARAMS1]
+  closepar: []
+
+RIGHTRECARITHEXPR:
+  plus: [ADDOP, TERM, RIGHTRECARITHEXPR]
+  minus: [ADDOP, TERM, RIGHTRECARITHEXPR]
+  or: [ADDOP, TERM, RIGHTRECARITHEXPR]
+  eq: []
+  noteq: []
+  lt: []
+  gt: []
+  leq: []
+  geq: []
+  closesqrbr: []
+  semi: []
+  comma: []
+  closepar: []
+
+RIGHTRECTERM:
+  mult: [MULTOP, FACTOR, RIGHTRECTERM]
+  div: [MULTOP, FACTOR, RIGHTRECTERM]
+  and: [MULTOP, FACTOR, RIGHTRECTERM]
+  plus: []
+  minus: []
+  or: []
+  eq: []
+  noteq: []
+  lt: []
+  gt: []
+  leq: []
+  geq: []
+  closesqrbr: []
+  semi: []
+  comma: []
+  closepar: []
+
+SIGN:
+  plus: [plus]
+  minus: [minus]
+
+TERM:
+  id: [FACTOR, RIGHTRECTERM]
+  intnum: [FACTOR, RIGHTRECTERM]
+  floatnum: [FACTOR, RIGHTRECTERM]
+  openpar: [FACTOR, RIGHTRECTERM]
+  not: [FACTOR, RIGHTRECTERM]
+  plus: [FACTOR, RIGHTRECTERM]
+  minus: [FACTOR, RIGHTRECTERM]
+
+VARIABLE:
+  id: [id, VARIABLE2]
+
+VARIABLE2:
+  openpar: [openpar, APARAMS, closepar, VARIDNEST]
+  opensqbr: [REPTIDNEST1, REPTVARIABLE]
+  dot: [REPTIDNEST1, REPTVARIABLE]
+  closepar: []
+
+REPTVARIABLE:
+  dot: [VARIDNEST, REPTVARIABLE]
+  closepar: []
+
+VARIDNEST:
+  dot: [dot, id, VARIDNEST2]
+
+VARIDNEST2:
+  openpar: [openpar, APARAMS, closepar, VARIDNEST]
+  opensqbr: [REPTIDNEST1]
+  dot: [REPTIDNEST1]
+  closepar: [REPTIDNEST1]
