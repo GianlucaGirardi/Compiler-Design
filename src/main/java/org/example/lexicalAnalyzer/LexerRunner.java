@@ -22,7 +22,6 @@ public class LexerRunner {
         ICharStream stream = new CharStream(inputFile);
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(new LexerConfig(), stream);
 
-
         while(true){
             Token token = lexicalAnalyzer.nextToken();
 

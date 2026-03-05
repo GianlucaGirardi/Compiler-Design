@@ -1,0 +1,248 @@
+START:
+  - [PROG, eof]
+
+PROG:
+  - [REPTPROG0, REPTPROG1, main, FUNCBODY]
+
+CLASSDECL:
+  - [class, id, OPTCLASSDECL2, opencubr, REPTCLASSDECL4, closecubr, semi]
+
+FPARAMS:
+  - [TYPE, id, REPTFPARAMS2, REPTFPARAMS3]
+  - []
+
+FPARAMSTAIL:
+  - [comma, TYPE, id, REPTFPARAMSTAIL3]
+
+FUNCBODY:
+  - [OPTFUNCBODY0, do, REPTFUNCBODY2, end]
+
+FUNCDEF:
+  - [FUNCHEAD, FUNCBODY]
+
+FUNCHEAD:
+  - [id, FUNCHEAD_TAIL, openpar, FPARAMS, closepar, colon, FUNCRET]
+
+FUNCHEAD_TAIL:
+  - [coloncolon, id]
+  - []
+
+FUNCRET:
+  - [TYPE]
+  - [void]
+
+MEMBERDECL:
+  - [id, MEMBERDECL_ID_TAIL]
+  - [integer, id, REPTVARDECL2, semi]
+  - [float, id, REPTVARDECL2, semi]
+
+MEMBERDECL_ID_TAIL:
+  - [openpar, FPARAMS, closepar, colon, FUNCRET, semi]
+  - [id, REPTVARDECL2, semi]
+
+OPTCLASSDECL2:
+  - [inherits, id, REPTOPTCLASSDECL22]
+  - []
+
+OPTFUNCBODY0:
+  - [local, REPTOPTFUNCBODY01]
+  - []
+
+REPTCLASSDECL4:
+  - [VISIBILITY, MEMBERDECL, REPTCLASSDECL4]
+  - []
+
+REPTFPARAMS2:
+  - [ARRAYSIZE, REPTFPARAMS2]
+  - []
+
+REPTFPARAMS3:
+  - [FPARAMSTAIL, REPTFPARAMS3]
+  - []
+
+REPTFPARAMSTAIL3:
+  - [ARRAYSIZE, REPTFPARAMSTAIL3]
+  - []
+
+REPTFUNCBODY2:
+  - [STATEMENT, REPTFUNCBODY2]
+  - []
+
+REPTOPTCLASSDECL22:
+  - [comma, id, REPTOPTCLASSDECL22]
+  - []
+
+REPTOPTFUNCBODY01:
+  - [VARDECL, REPTOPTFUNCBODY01]
+  - []
+
+REPTPROG0:
+  - [CLASSDECL, REPTPROG0]
+  - []
+
+REPTPROG1:
+  - [FUNCDEF, REPTPROG1]
+  - []
+
+REPTSTATBLOCK1:
+  - [STATEMENT, REPTSTATBLOCK1]
+  - []
+
+REPTVARDECL2:
+  - [ARRAYSIZE, REPTVARDECL2]
+  - []
+
+STATBLOCK:
+  - [do, REPTSTATBLOCK1, end]
+  - [STATEMENT]
+  - []
+
+STATEMENT:
+  - [if, openpar, RELEXPR, closepar, then, STATBLOCK, else, STATBLOCK, semi]
+  - [while, openpar, RELEXPR, closepar, STATBLOCK, semi]
+  - [read, openpar, VARIABLE, closepar, semi]
+  - [write, openpar, EXPR, closepar, semi]
+  - [return, openpar, EXPR, closepar, semi]
+  - [id, STMT_ID_TAIL, semi]
+
+STMT_ID_TAIL:
+  - [openpar, APARAMS, closepar, STMT_AFTER_CALL]
+  - [REPTIDNEST1, STMT_AFTER_VAR]
+
+STMT_AFTER_CALL:
+  - [dot, id, STMT_ID_TAIL]
+  - []
+
+STMT_AFTER_VAR:
+  - [dot, id, STMT_ID_TAIL]
+  - [ASSIGNOP, EXPR]
+
+RELEXPR:
+  - [ARITHEXPR, EXPR4]
+
+EXPR4:
+  - [RELOP, ARITHEXPR]
+
+TYPE:
+  - [integer]
+  - [float]
+  - [id]
+
+VARDECL:
+  - [TYPE, id, REPTVARDECL2, semi]
+
+VISIBILITY:
+  - [public]
+  - [private]
+
+ADDOP:
+  - [plus]
+  - [minus]
+  - [or]
+
+APARAMS:
+  - [EXPR, REPTAPARAMS1]
+  - []
+
+APARAMSTAIL:
+  - [comma, EXPR]
+
+ARITHEXPR:
+  - [TERM, RIGHTRECARITHEXPR]
+
+ARRAYSIZE:
+  - [opensqbr, ARRAYSIZE2]
+
+ARRAYSIZE2:
+  - [intnum, closesqrbr]
+  - [closesqrbr]
+
+ASSIGNOP:
+  - [assign]
+
+EXPR:
+  - [ARITHEXPR, EXPR2]
+
+EXPR2:
+  - [RELOP, ARITHEXPR]
+  - []
+
+FACTOR:
+  - [id, FACTOR2, REPTVARIABLEORFUNCTIONCALL]
+  - [intnum]
+  - [floatnum]
+  - [openpar, ARITHEXPR, closepar]
+  - [not, FACTOR]
+  - [SIGN, FACTOR]
+
+FACTOR2:
+  - [openpar, APARAMS, closepar]
+  - [REPTIDNEST1]
+
+REPTIDNEST1:
+  - [INDICE, REPTIDNEST1]
+  - []
+
+REPTVARIABLEORFUNCTIONCALL:
+  - [IDNEST, REPTVARIABLEORFUNCTIONCALL]
+  - []
+
+IDNEST:
+  - [dot, id, IDNEST2]
+
+IDNEST2:
+  - [openpar, APARAMS, closepar]
+  - [REPTIDNEST1]
+
+INDICE:
+  - [opensqbr, ARITHEXPR, closesqrbr]
+
+MULTOP:
+  - [mult]
+  - [div]
+  - [and]
+
+RELOP:
+  - [eq]
+  - [noteq]
+  - [lt]
+  - [gt]
+  - [leq]
+  - [geq]
+
+REPTAPARAMS1:
+  - [APARAMSTAIL, REPTAPARAMS1]
+  - []
+
+RIGHTRECARITHEXPR:
+  - []
+  - [ADDOP, TERM, RIGHTRECARITHEXPR]
+
+RIGHTRECTERM:
+  - []
+  - [MULTOP, FACTOR, RIGHTRECTERM]
+
+SIGN:
+  - [plus]
+  - [minus]
+
+TERM:
+  - [FACTOR, RIGHTRECTERM]
+
+VARIABLE:
+  - [id, VARIABLE2]
+
+VARIABLE2:
+  - [REPTIDNEST1, REPTVARIABLE]
+  - [openpar, APARAMS, closepar, VARIDNEST]
+
+REPTVARIABLE:
+  - [VARIDNEST, REPTVARIABLE]
+  - []
+
+VARIDNEST:
+  - [dot, id, VARIDNEST2]
+
+VARIDNEST2:
+  - [openpar, APARAMS, closepar, VARIDNEST]
+  - [REPTIDNEST1]

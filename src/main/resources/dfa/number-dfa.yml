@@ -2,12 +2,12 @@ name: NumDfa
 startState: q0
 alphabet: [ZERO_DIGIT, NONZERO_DIGIT, DOT, E_LETTER, PLUS, MINUS]
 types: [INTEGER, FLOAT]
-acceptStates: [q1, q2, q4, q8, q9]
+acceptStates: [q1, q2, q4, q8, q9, q10]
 trapStates: [qTrap1, qTrap2]
 
 stateTypes:
   INTEGER: [q1, q2]
-  FLOAT: [q3, q4, q5, q6, q7, q8, q9]
+  FLOAT: [q3, q4, q5, q6, q7, q8, q9, q10]
 
 transitions:
   q0:
@@ -26,7 +26,12 @@ transitions:
 
   q3:
     ZERO_DIGIT: q4
-    NONZERO_DIGIT: q6
+    NONZERO_DIGIT: q10
+
+  q10:
+    ZERO_DIGIT: q6
+    NONZERO_DIGIT: q10
+    E_LETTER: q5
 
   q4:
     ZERO_DIGIT: q6

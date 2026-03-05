@@ -7,6 +7,7 @@ import org.example.lexicalAnalyzer.config.DfaRegistry;
 import org.example.lexicalAnalyzer.config.TransitionTable;
 import org.example.lexicalAnalyzer.token.Token;
 
+import java.util.Map;
 import java.util.Set;
 
 import static org.example.lexicalAnalyzer.config.Constants.*;
@@ -19,6 +20,9 @@ public class NumberDispatcher implements Dispatcher {
     private static final Set<Character> DELIMITER_SET = Set.of(
             PLUS, MINUS, STAR, SLASH, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, SEMICOLON,
             COMMA, COLON);
+
+    private static final Map<String, String> FLACI_MAP = Map.ofEntries(Map.entry("INTEGER", "intnum"),
+            Map.entry("FLOAT", "floatnum"));
 
     @Override
     public Token processToken(ICharStream stream) {
@@ -34,7 +38,7 @@ public class NumberDispatcher implements Dispatcher {
 
         String stateType = table.getStateToType().get(endState);
         if (stateType != null && table.isAcceptState(endState)){
-            return new Token(stateType, lexeme, line, true);
+            return new Token(FLACI_MAP.get(stateType), lexeme, line, true);
         }
 
         return new Token(getInvalidTokenType(null), lexeme, line, false);
