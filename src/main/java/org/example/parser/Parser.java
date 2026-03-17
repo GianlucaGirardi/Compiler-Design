@@ -1,7 +1,10 @@
 package org.example.parser;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.example.lexicalAnalyzer.token.Token;
 import org.example.parser.grammar.*;
+import org.example.parser.node.ASTNode;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -20,17 +23,49 @@ public final class Parser {
 
     private final BufferedWriter syntaxErrorWriter;
 
+    private final SemanticStack semanticStack = new SemanticStack();
+
+    private final SemanticActionExecutor actionExecutor = new SemanticActionExecutor();
+
     private boolean hadError = false;
+    private boolean semanticFailed = false;
+    private Token lastMatched = null;
 
     private final List<Symbol> sentential = new ArrayList<>();
 
-    public boolean parse() {
+    @Getter
+    private ASTNode astRoot;
+
+    public ASTNode parse() {
+        hadError = false;
+        semanticFailed = false;
+        lastMatched = null;
+        astRoot = null;
+        semanticStack.clear();
+
         Deque<Symbol> stack = initStack();
         initDerivationTrace();
         writeSententialForm();
 
         while (!stack.isEmpty()) {
             Symbol top = stack.peek();
+
+            if (top instanceof SemanticAction action) {
+                stack.pop();
+
+                if (!hadError && !semanticFailed) {
+                    try {
+                        actionExecutor.execute(action.raw(), semanticStack, lastMatched);
+                    } catch (IllegalStateException | IllegalArgumentException e) {
+                        semanticFailed = true;
+                        hadError = true;
+                        syntaxError("semantic error while executing " + action.raw() + ": " + e.getMessage());
+                    }
+                }
+
+                continue;
+            }
+
             String lookahead = lookaheadType();
 
             if (top instanceof Terminal t) {
@@ -42,7 +77,19 @@ public final class Parser {
             }
         }
 
-        return isEofLookahead() && !hadError;
+        boolean success = isEofLookahead() && !hadError && !semanticFailed;
+
+        if (success) {
+            if (semanticStack.size() != 1) {
+                syntaxError("semantic error: parsing succeeded but semantic stack has size " +
+                        semanticStack.size() + " instead of 1");
+                return null;
+            }
+            astRoot = semanticStack.pop();
+            return astRoot;
+        }
+
+        return null;
     }
 
     private Deque<Symbol> initStack() {
@@ -67,7 +114,7 @@ public final class Parser {
     private void matchTerminalWithRecovery(Deque<Symbol> stack, Terminal expected, String lookahead) {
         if (expected.raw().equals(lookahead)) {
             stack.pop();
-            tokenStream.consume();
+            lastMatched = tokenStream.consume();
             return;
         }
 
@@ -91,7 +138,10 @@ public final class Parser {
         Production p = table.get(nt, lookahead);
 
         if (p != null) {
-            applyDerivationStep(nt, p.rhs());
+            List<Symbol> rhsWithoutSemanticActions = p.rhs().stream()
+                    .filter(s -> !(s instanceof SemanticAction))
+                    .toList();
+            applyDerivationStep(nt, rhsWithoutSemanticActions);
             writeSententialForm();
 
             stack.pop();

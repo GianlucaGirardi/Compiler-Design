@@ -4,62 +4,62 @@ START:
   id: [PROG, eof]
 
 PROG:
-  main: [REPTPROG0, REPTPROG1, main, FUNCBODY]
-  class: [REPTPROG0, REPTPROG1, main, FUNCBODY]
-  id: [REPTPROG0, REPTPROG1, main, FUNCBODY]
+  main: ["{A1}", REPTPROG0, "{B1}", "{A1}", REPTPROG1, "{B2}", main, FUNCBODY, "{B3}"]
+  class: ["{A1}", REPTPROG0, "{B1}", "{A1}", REPTPROG1, "{B2}", main, FUNCBODY, "{B3}"]
+  id: ["{A1}", REPTPROG0, "{B1}", "{A1}", REPTPROG1, "{B2}", main, FUNCBODY, "{B3}"]
 
 CLASSDECL:
-  class: [class, id, OPTCLASSDECL2, opencubr, REPTCLASSDECL4, closecubr, semi]
+  class: [class, id, "{A2}", OPTCLASSDECL2, opencubr, "{A1}", REPTCLASSDECL4, "{B5}", closecubr, semi, "{B7}"]
 
 FPARAMS:
-  integer: [TYPE, id, REPTFPARAMS2, REPTFPARAMS3]
-  float: [TYPE, id, REPTFPARAMS2, REPTFPARAMS3]
-  id: [TYPE, id, REPTFPARAMS2, REPTFPARAMS3]
-  closepar: []
+  integer: ["{A1}", TYPE, id, "{A2}", "{A1}", REPTFPARAMS2, "{B8}", "{B10}", REPTFPARAMS3, "{B11}"]
+  float: ["{A1}", TYPE, id, "{A2}", "{A1}", REPTFPARAMS2, "{B8}", "{B10}", REPTFPARAMS3, "{B11}"]
+  id: ["{A1}", TYPE, id, "{A2}", "{A1}", REPTFPARAMS2, "{B8}", "{B10}", REPTFPARAMS3, "{B11}"]
+  closepar: ["{A1}", "{B11}"]
 
 FPARAMSTAIL:
-  comma: [comma, TYPE, id, REPTFPARAMSTAIL3]
+  comma: [comma, TYPE, id, "{A2}", "{A1}", REPTFPARAMSTAIL3, "{B8}", "{B10}"]
 
 FUNCBODY:
-  do: [OPTFUNCBODY0, do, REPTFUNCBODY2, end]
-  local: [OPTFUNCBODY0, do, REPTFUNCBODY2, end]
+  do: ["{A1}", OPTFUNCBODY0, "{B17}", do, "{A1}", REPTFUNCBODY2, "{B18}", end, "{B19}", "{B20}"]
+  local: ["{A1}", OPTFUNCBODY0, "{B17}", do, "{A1}", REPTFUNCBODY2, "{B18}", end, "{B19}", "{B20}"]
 
 FUNCDEF:
-  id: [FUNCHEAD, FUNCBODY]
+  id: [FUNCHEAD, FUNCBODY, "{B16}"]
 
 FUNCHEAD:
-  id: [id, FUNCHEAD_TAIL, openpar, FPARAMS, closepar, colon, FUNCRET]
+  id: [id, "{A2}", FUNCHEAD_TAIL, openpar, FPARAMS, closepar, colon, FUNCRET, "{B13}"]
 
 FUNCHEAD_TAIL:
-  coloncolon: [coloncolon, id]
-  openpar: []
+  coloncolon: [coloncolon, id, "{A2}", "{B15}"]
+  openpar: ["{A13}"]
 
 FUNCRET:
-  void: [void]
+  void: [void, "{A5}"]
   integer: [TYPE]
   float: [TYPE]
   id: [TYPE]
 
 MEMBERDECL:
-  id: [id, MEMBERDECL_ID_TAIL]
-  integer: [integer, id, REPTVARDECL2, semi]
-  float: [float, id, REPTVARDECL2, semi]
+  id: [id, "{A2}", MEMBERDECL_ID_TAIL]
+  integer: [integer, "{A4}", id, "{A2}", "{A1}", REPTVARDECL2, "{B8}", semi, "{B9}"]
+  float: [float, "{A4}", id, "{A2}", "{A1}", REPTVARDECL2, "{B8}", semi, "{B9}"]
 
 MEMBERDECL_ID_TAIL:
-  openpar: [openpar, FPARAMS, closepar, colon, FUNCRET, semi]
-  id: [id, REPTVARDECL2, semi]
+  openpar: [openpar, FPARAMS, closepar, colon, FUNCRET, "{B13}", semi, "{B14}"]
+  id: [id, "{A2}", "{A1}", REPTVARDECL2, "{B8}", semi, "{B9}"]
 
 OPTCLASSDECL2:
-  inherits: [inherits, id, REPTOPTCLASSDECL22]
-  opencubr: []
+  inherits: [inherits, "{A1}", id, "{A2}", REPTOPTCLASSDECL22, "{B4}"]
+  opencubr: ["{A1}", "{B4}"]
 
 OPTFUNCBODY0:
   local: [local, REPTOPTFUNCBODY01]
   do: []
 
 REPTCLASSDECL4:
-  public: [VISIBILITY, MEMBERDECL, REPTCLASSDECL4]
-  private: [VISIBILITY, MEMBERDECL, REPTCLASSDECL4]
+  public: [VISIBILITY, MEMBERDECL, "{B6}", REPTCLASSDECL4]
+  private: [VISIBILITY, MEMBERDECL, "{B6}", REPTCLASSDECL4]
   closecubr: []
 
 REPTFPARAMS2:
@@ -86,7 +86,7 @@ REPTFUNCBODY2:
   end: []
 
 REPTOPTCLASSDECL22:
-  comma: [comma, id, REPTOPTCLASSDECL22]
+  comma: [comma, id, "{A2}", REPTOPTCLASSDECL22]
   opencubr: []
 
 REPTOPTFUNCBODY01:
@@ -118,46 +118,46 @@ REPTVARDECL2:
   semi: []
 
 STATBLOCK:
-  do: [do, REPTSTATBLOCK1, end]
-  if: [STATEMENT]
-  while: [STATEMENT]
-  read: [STATEMENT]
-  write: [STATEMENT]
-  return: [STATEMENT]
-  id: [STATEMENT]
-  else: []
-  semi: []
+  do: [do, "{A1}", REPTSTATBLOCK1, "{B18}", end, "{B19}"]
+  if: ["{A1}", STATEMENT, "{B18}", "{B19}"]
+  while: ["{A1}", STATEMENT, "{B18}", "{B19}"]
+  read: ["{A1}", STATEMENT, "{B18}", "{B19}"]
+  write: ["{A1}", STATEMENT, "{B18}", "{B19}"]
+  return: ["{A1}", STATEMENT, "{B18}", "{B19}"]
+  id: ["{A1}", STATEMENT, "{B18}", "{B19}"]
+  else: ["{A1}", "{B18}", "{B19}"]
+  semi: ["{A1}", "{B18}", "{B19}"]
 
 STATEMENT:
-  if: [if, openpar, RELEXPR, closepar, then, STATBLOCK, else, STATBLOCK, semi]
-  while: [while, openpar, RELEXPR, closepar, STATBLOCK, semi]
-  read: [read, openpar, VARIABLE, closepar, semi]
-  write: [write, openpar, EXPR, closepar, semi]
-  return: [return, openpar, EXPR, closepar, semi]
-  id: [id, STMT_ID_TAIL, semi]
+  if: [if, openpar, RELEXPR, closepar, then, STATBLOCK, else, STATBLOCK, semi, "{B22}"]
+  while: [while, openpar, RELEXPR, closepar, STATBLOCK, semi, "{B23}"]
+  read: [read, openpar, VARIABLE, closepar, semi, "{B24}"]
+  write: [write, openpar, EXPR, closepar, semi, "{B25}"]
+  return: [return, openpar, EXPR, closepar, semi, "{B26}"]
+  id: ["{A1}", id, "{A2}", STMT_ID_TAIL, semi]
 
 STMT_ID_TAIL:
-  openpar: [openpar, APARAMS, closepar, STMT_AFTER_CALL]
-  dot: [REPTIDNEST1, STMT_AFTER_VAR]
-  opensqbr: [REPTIDNEST1, STMT_AFTER_VAR]
-  assign: [REPTIDNEST1, STMT_AFTER_VAR]
+  openpar: [openpar, APARAMS, closepar, "{B29}", "{B30}", STMT_AFTER_CALL]
+  dot: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}", STMT_AFTER_VAR]
+  opensqbr: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}", STMT_AFTER_VAR]
+  assign: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}", STMT_AFTER_VAR]
 
 STMT_AFTER_CALL:
-  dot: [dot, id, STMT_ID_TAIL]
-  semi: []
+  dot: [dot, id, "{A2}", STMT_ID_TAIL]
+  semi: [ "{B37}"]
 
 STMT_AFTER_VAR:
-  dot: [dot, id, STMT_ID_TAIL]
-  assign: [ASSIGNOP, EXPR]
+  dot: [dot, id, "{A2}", STMT_ID_TAIL]
+  assign: ["{B31}", ASSIGNOP, EXPR, "{B21}"]
 
 RELEXPR:
-  id: [ARITHEXPR, EXPR4]
-  intnum: [ARITHEXPR, EXPR4]
-  floatnum: [ARITHEXPR, EXPR4]
-  openpar: [ARITHEXPR, EXPR4]
-  not: [ARITHEXPR, EXPR4]
-  plus: [ARITHEXPR, EXPR4]
-  minus: [ARITHEXPR, EXPR4]
+  id: [ARITHEXPR, EXPR4, "{B32}"]
+  intnum: [ARITHEXPR, EXPR4, "{B32}"]
+  floatnum: [ARITHEXPR, EXPR4, "{B32}"]
+  openpar: [ARITHEXPR, EXPR4, "{B32}"]
+  not: [ARITHEXPR, EXPR4, "{B32}"]
+  plus: [ARITHEXPR, EXPR4, "{B32}"]
+  minus: [ARITHEXPR, EXPR4, "{B32}"]
 
 EXPR4:
   eq: [RELOP, ARITHEXPR]
@@ -168,55 +168,55 @@ EXPR4:
   geq: [RELOP, ARITHEXPR]
 
 TYPE:
-  integer: [integer]
-  float: [float]
-  id: [id]
+  integer: [integer, "{A4}"]
+  float: [float, "{A4}"]
+  id: [id, "{A4}"]
 
 VARDECL:
-  integer: [TYPE, id, REPTVARDECL2, semi]
-  float: [TYPE, id, REPTVARDECL2, semi]
-  id: [TYPE, id, REPTVARDECL2, semi]
+  integer: [TYPE, id, "{A2}", "{A1}", REPTVARDECL2, "{B8}", semi, "{B9}"]
+  float: [TYPE, id, "{A2}", "{A1}", REPTVARDECL2, "{B8}", semi, "{B9}"]
+  id: [TYPE, id, "{A2}", "{A1}", REPTVARDECL2, "{B8}", semi, "{B9}"]
 
 VISIBILITY:
-  public: [public]
-  private: [private]
+  public: [public, "{A6}"]
+  private: [private, "{A6}"]
 
 ADDOP:
-  plus: [plus]
-  minus: [minus]
-  or: [or]
+  plus: [plus, "{A9}"]
+  minus: [minus, "{A9}"]
+  or: [or, "{A9}"]
 
 APARAMS:
-  id: [EXPR, REPTAPARAMS1]
-  intnum: [EXPR, REPTAPARAMS1]
-  floatnum: [EXPR, REPTAPARAMS1]
-  openpar: [EXPR, REPTAPARAMS1]
-  not: [EXPR, REPTAPARAMS1]
-  plus: [EXPR, REPTAPARAMS1]
-  minus: [EXPR, REPTAPARAMS1]
-  closepar: []
+  id: ["{A1}", EXPR, REPTAPARAMS1, "{B12}"]
+  intnum: ["{A1}", EXPR, REPTAPARAMS1, "{B12}"]
+  floatnum: ["{A1}", EXPR, REPTAPARAMS1, "{B12}"]
+  openpar: ["{A1}", EXPR, REPTAPARAMS1, "{B12}"]
+  not: ["{A1}", EXPR, REPTAPARAMS1, "{B12}"]
+  plus: ["{A1}", EXPR, REPTAPARAMS1, "{B12}"]
+  minus: ["{A1}", EXPR, REPTAPARAMS1, "{B12}"]
+  closepar: ["{A1}", "{B12}"]
 
 APARAMSTAIL:
   comma: [comma, EXPR]
 
 ARITHEXPR:
-  id: [TERM, RIGHTRECARITHEXPR]
-  intnum: [TERM, RIGHTRECARITHEXPR]
-  floatnum: [TERM, RIGHTRECARITHEXPR]
-  openpar: [TERM, RIGHTRECARITHEXPR]
-  not: [TERM, RIGHTRECARITHEXPR]
-  plus: [TERM, RIGHTRECARITHEXPR]
-  minus: [TERM, RIGHTRECARITHEXPR]
+  id: ["{A1}", TERM, RIGHTRECARITHEXPR, "{B33}"]
+  intnum: ["{A1}", TERM, RIGHTRECARITHEXPR, "{B33}"]
+  floatnum: ["{A1}", TERM, RIGHTRECARITHEXPR, "{B33}"]
+  openpar: ["{A1}", TERM, RIGHTRECARITHEXPR, "{B33}"]
+  not: ["{A1}", TERM, RIGHTRECARITHEXPR, "{B33}"]
+  plus: ["{A1}", TERM, RIGHTRECARITHEXPR, "{B33}"]
+  minus: ["{A1}", TERM, RIGHTRECARITHEXPR, "{B33}"]
 
 ARRAYSIZE:
   opensqbr: [opensqbr, ARRAYSIZE2]
 
 ARRAYSIZE2:
-  intnum: [intnum, closesqrbr]
-  closesqrbr: [closesqrbr]
+  intnum: [intnum, "{A3}", closesqrbr]
+  closesqrbr: [closesqrbr, "{A13}"]
 
 ASSIGNOP:
-  assign: [assign]
+  assign: [assign, "{A7}"]
 
 EXPR:
   id: [ARITHEXPR, EXPR2]
@@ -228,45 +228,45 @@ EXPR:
   minus: [ARITHEXPR, EXPR2]
 
 EXPR2:
-  eq: [RELOP, ARITHEXPR]
-  noteq: [RELOP, ARITHEXPR]
-  lt: [RELOP, ARITHEXPR]
-  gt: [RELOP, ARITHEXPR]
-  leq: [RELOP, ARITHEXPR]
-  geq: [RELOP, ARITHEXPR]
+  eq: [RELOP, ARITHEXPR, "{B32}"]
+  noteq: [RELOP, ARITHEXPR, "{B32}"]
+  lt: [RELOP, ARITHEXPR, "{B32}"]
+  gt: [RELOP, ARITHEXPR, "{B32}"]
+  leq: [RELOP, ARITHEXPR, "{B32}"]
+  geq: [RELOP, ARITHEXPR, "{B32}"]
   semi: []
   closepar: []
   comma: []
 
 FACTOR:
-  id: [id, FACTOR2, REPTVARIABLEORFUNCTIONCALL]
-  intnum: [intnum]
-  floatnum: [floatnum]
+  id: ["{A1}", id, "{A2}", FACTOR2, REPTVARIABLEORFUNCTIONCALL, "{B38}"]
+  intnum: [intnum, "{A3}"]
+  floatnum: [floatnum, "{A3}"]
   openpar: [openpar, ARITHEXPR, closepar]
-  not: [not, FACTOR]
-  plus: [SIGN, FACTOR]
-  minus: [SIGN, FACTOR]
+  not: [not, "{A12}", FACTOR, "{B35}"]
+  plus: [SIGN, FACTOR, "{B36}"]
+  minus: [SIGN, FACTOR, "{B36}"]
 
 FACTOR2:
-  openpar: [openpar, APARAMS, closepar]
-  opensqbr: [REPTIDNEST1]
-  mult: [REPTIDNEST1]
-  div: [REPTIDNEST1]
-  and: [REPTIDNEST1]
-  dot: [REPTIDNEST1]
-  plus: [REPTIDNEST1]
-  minus: [REPTIDNEST1]
-  or: [REPTIDNEST1]
-  eq: [REPTIDNEST1]
-  noteq: [REPTIDNEST1]
-  lt: [REPTIDNEST1]
-  gt: [REPTIDNEST1]
-  leq: [REPTIDNEST1]
-  geq: [REPTIDNEST1]
-  closesqrbr: [REPTIDNEST1]
-  semi: [REPTIDNEST1]
-  comma: [REPTIDNEST1]
-  closepar: [REPTIDNEST1]
+  openpar: [openpar, APARAMS, closepar, "{B29}", "{B30}"]
+  opensqbr: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  mult: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  div: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  and: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  dot: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  plus: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  minus: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  or: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  eq: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  noteq: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  lt: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  gt: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  leq: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  geq: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  closesqrbr: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  semi: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  comma: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  closepar: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
 
 REPTIDNEST1:
   opensqbr: [INDICE, REPTIDNEST1]
@@ -309,44 +309,44 @@ REPTVARIABLEORFUNCTIONCALL:
   closepar: []
 
 IDNEST:
-  dot: [dot, id, IDNEST2]
+  dot: [dot, id, "{A2}", IDNEST2]
 
 IDNEST2:
-  openpar: [openpar, APARAMS, closepar]
-  opensqbr: [REPTIDNEST1]
-  mult: [REPTIDNEST1]
-  div: [REPTIDNEST1]
-  and: [REPTIDNEST1]
-  dot: [REPTIDNEST1]
-  plus: [REPTIDNEST1]
-  minus: [REPTIDNEST1]
-  or: [REPTIDNEST1]
-  eq: [REPTIDNEST1]
-  noteq: [REPTIDNEST1]
-  lt: [REPTIDNEST1]
-  gt: [REPTIDNEST1]
-  leq: [REPTIDNEST1]
-  geq: [REPTIDNEST1]
-  closesqrbr: [REPTIDNEST1]
-  semi: [REPTIDNEST1]
-  comma: [REPTIDNEST1]
-  closepar: [REPTIDNEST1]
+  openpar: [openpar, APARAMS, closepar, "{B29}", "{B30}"]
+  opensqbr: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  mult: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  div: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  and: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  dot: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  plus: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  minus: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  or: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  eq: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  noteq: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  lt: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  gt: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  leq: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  geq: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  closesqrbr: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  semi: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  comma: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  closepar: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
 
 INDICE:
   opensqbr: [opensqbr, ARITHEXPR, closesqrbr]
 
 MULTOP:
-  mult: [mult]
-  div: [div]
-  and: [and]
+  mult: [mult, "{A10}"]
+  div: [div, "{A10}"]
+  and: [and, "{A10}"]
 
 RELOP:
-  eq: [eq]
-  noteq: [noteq]
-  lt: [lt]
-  gt: [gt]
-  leq: [leq]
-  geq: [geq]
+  eq: [eq, "{A8}"]
+  noteq: [noteq, "{A8}"]
+  lt: [lt, "{A8}"]
+  gt: [gt, "{A8}"]
+  leq: [leq, "{A8}"]
+  geq: [geq, "{A8}"]
 
 REPTAPARAMS1:
   comma: [APARAMSTAIL, REPTAPARAMS1]
@@ -386,36 +386,36 @@ RIGHTRECTERM:
   closepar: []
 
 SIGN:
-  plus: [plus]
-  minus: [minus]
+  plus: [plus, "{A11}"]
+  minus: [minus, "{A11}"]
 
 TERM:
-  id: [FACTOR, RIGHTRECTERM]
-  intnum: [FACTOR, RIGHTRECTERM]
-  floatnum: [FACTOR, RIGHTRECTERM]
-  openpar: [FACTOR, RIGHTRECTERM]
-  not: [FACTOR, RIGHTRECTERM]
-  plus: [FACTOR, RIGHTRECTERM]
-  minus: [FACTOR, RIGHTRECTERM]
+  id: ["{A1}", FACTOR, RIGHTRECTERM, "{B34}"]
+  intnum: ["{A1}", FACTOR, RIGHTRECTERM, "{B34}"]
+  floatnum: ["{A1}", FACTOR, RIGHTRECTERM, "{B34}"]
+  openpar: ["{A1}", FACTOR, RIGHTRECTERM, "{B34}"]
+  not: ["{A1}", FACTOR, RIGHTRECTERM, "{B34}"]
+  plus: ["{A1}", FACTOR, RIGHTRECTERM, "{B34}"]
+  minus: ["{A1}", FACTOR, RIGHTRECTERM, "{B34}"]
 
 VARIABLE:
-  id: [id, VARIABLE2]
+  id: ["{A1}", id, "{A2}", VARIABLE2, "{B31}"]
 
 VARIABLE2:
-  openpar: [openpar, APARAMS, closepar, VARIDNEST]
-  opensqbr: [REPTIDNEST1, REPTVARIABLE]
-  dot: [REPTIDNEST1, REPTVARIABLE]
-  closepar: [REPTIDNEST1, REPTVARIABLE]
+  openpar: [openpar, APARAMS, closepar, "{B29}", "{B30}", VARIDNEST]
+  opensqbr: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}", REPTVARIABLE]
+  dot: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}", REPTVARIABLE]
+  closepar: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}", REPTVARIABLE]
 
 REPTVARIABLE:
   dot: [VARIDNEST, REPTVARIABLE]
   closepar: []
 
 VARIDNEST:
-  dot: [dot, id, VARIDNEST2]
+  dot: [dot, id, "{A2}", VARIDNEST2]
 
 VARIDNEST2:
-  openpar: [openpar, APARAMS, closepar, VARIDNEST]
-  opensqbr: [REPTIDNEST1]
-  dot: [REPTIDNEST1]
-  closepar: [REPTIDNEST1]
+  openpar: [openpar, APARAMS, closepar, "{B29}", "{B30}", VARIDNEST]
+  opensqbr: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  dot: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]
+  closepar: ["{A1}", REPTIDNEST1, "{B27}", "{B28}", "{B30}"]

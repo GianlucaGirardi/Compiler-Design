@@ -1,0 +1,61 @@
+package org.example.parser.node;
+
+public enum NodeType {
+    ID,
+    NUM,
+    TYPE,
+    VOID,
+    VISIBILITY,
+    ASSIGN_OP,
+    REL_OP,
+    ADD_OP,
+    MULT_OP,
+    SIGN,
+    NOT,
+
+    PROG,
+    CLASS_DECL,
+    CLASS_DECL_LIST,
+    FUNC_DEF,
+    FUNC_DEF_LIST,
+    FUNC_BODY,
+
+    MEMBER_DECL,
+    MEMBER_DECL_LIST,
+    INHERITANCE_LIST,
+
+    FUNC_DECL,
+    VAR_DECL,
+    VAR_DECL_LIST,
+    FPARAM,
+    FPARAM_LIST,
+    APARAMS,
+    RETURN_TYPE,
+    DIMENSION_LIST,
+
+    STAT_BLOCK,
+    STATEMENT_LIST,
+    ASSIGN_STAT,
+    IF_STAT,
+    WHILE_STAT,
+    READ_STAT,
+    WRITE_STAT,
+    RETURN_STAT,
+    FUNC_CALL_STAT,
+
+    FUNC_CALL,
+    DATA_MEMBER,
+    DOT_PARAM,
+    DOT_ACCESS,
+    INDEX_LIST,
+    SCOPE_RESOLUTION,
+
+    REL_EXPR,
+    ARITH_EXPR,
+    TERM,
+    NOT_FACTOR,
+    SIGNED_FACTOR,
+
+    EPSILON,
+    MARKER
+}

@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.*;
 import org.example.parser.*;
-import org.example.parser.grammar.NonTerminal;
-import org.example.parser.grammar.Production;
-import org.example.parser.grammar.Symbol;
-import org.example.parser.grammar.Terminal;
+import org.example.parser.grammar.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +17,8 @@ import java.util.Map;
 public class ParseTableLoader {
 
     private static final ObjectMapper MAPPER = new ObjectMapper(new YAMLFactory());
+
+    private static final java.util.regex.Pattern ACTION = java.util.regex.Pattern.compile("^\\{[AB]\\d+\\}$");
 
     @Getter
     private static ParseTable table;
@@ -54,6 +53,10 @@ public class ParseTableLoader {
 
         if (raw == null || raw.isBlank()) {
             throw new IllegalArgumentException("Invalid grammar symbol: " + raw);
+        }
+
+        if (ACTION.matcher(raw).matches()) {
+            return new SemanticAction(raw);
         }
 
         if (Character.isUpperCase(raw.charAt(0))) {
